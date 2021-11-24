@@ -9,7 +9,7 @@ export function getAppointmentsForDay(state, day) {
     return [];
   }
 
-  // returns object from an id
+  // returns appointments object from an id
 
   const appointments = filteredDays[0].appointments.map((id) => {
     return state.appointments[id];
@@ -17,4 +17,3 @@ export function getAppointmentsForDay(state, day) {
 
   return appointments;
 }
-console.log(state.days[0].appointments.length);
