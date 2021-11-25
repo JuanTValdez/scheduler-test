@@ -42,53 +42,39 @@ const appointments = {
     time: '4pm',
   },
 };
-// make response like days
-// const days = [
-//   {
-//     id: 1,
-//     name: 'Monday',
-//     spots: 2,
-//   },
-//   {
-//     id: 2,
-//     name: 'Tuesday',
-//     spots: 5,
-//   },
-//   {
-//     id: 3,
-//     name: 'Wednesday',
-//     spots: 0,
-//   },
-// ];
 
 export default function Application(props) {
-  // const [day, setDay] = useState('Monday');
-  const [day, setDay] = useState('Monday');
-  const [days, setDays] = useState([]);
-  const url = `http://localhost:8001/api/days`;
+  // Setting multiple states into one state.
+  // Each key is a different state.
+  const [state, setState] = useState({
+    day: 'Monday',
+    days: [],
+  });
+  // ...state contains all keys within the setState object
+  const setDay = (day) => setState({ ...state, day });
+  // Since setDays is being used in useEffect, we must use setState((prev) => ({ ...prev, days })) instead of using setState({ ...state, day })
+  const setDays = (days) => setState((prev) => ({ ...prev, days }));
 
-  useEffect(() => {
-    axios.get(url).then((response) => {
-      setDays([...response.data]);
-    });
-  }, []);
-
-  // console.log('Day: ', day);
-  // console.log('Days: ', days);
+  // http://localhost:8001/api/days isnt required, because localhost is used by default
+  const url = `/api/days`;
 
   const changeDay = function (newDay) {
-    if (day === 'Monday') {
+    if (state.day === 'Monday') {
       setDay(newDay);
-    } else if (day === 'Tuesday') {
+    } else if (state.day === 'Tuesday') {
       setDay(newDay);
-    } else if (day === 'Wednesday') {
+    } else if (state.day === 'Wednesday') {
       setDay(newDay);
-    } else if (day === 'Thursday') {
+    } else if (state.day === 'Thursday') {
       setDay(newDay);
-    } else if (day === 'Friday') {
+    } else if (state.day === 'Friday') {
       setDay(newDay);
     }
   };
+
+  useEffect(() => {
+    axios.get(url).then((response) => setDays(response.data));
+  }, []);
 
   return (
     <main className='layout'>
@@ -100,15 +86,20 @@ export default function Application(props) {
         />
         <hr className='sidebar__separator sidebar--centered' />
         <nav className='sidebar__menu'>
-          <DayList
+          {/* <DayList
             days={days}
             value={day}
             onChange={(day) => {
               changeDay(day);
             }}
-            // setDay={(day) => {
-            //   changeDay(day);
-            // }}
+           
+          /> */}
+          <DayList
+            days={state.days}
+            value={state.day}
+            onChange={(day) => {
+              changeDay(day);
+            }}
           />
         </nav>
         <img
