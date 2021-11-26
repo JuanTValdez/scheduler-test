@@ -2,61 +2,68 @@ import React, { useState, useEffect } from 'react';
 import 'components/Application.scss';
 import DayList from './DayList.js';
 import axios from 'axios';
-import InterviewerList from './InterviewerList.js';
 import Appointment from './Appointment/index.js';
-const appointments = {
-  1: {
-    id: 1,
-    time: '12pm',
-  },
-  2: {
-    id: 2,
-    time: '1pm',
-    interview: {
-      student: 'Lydia Miller-Jones',
-      interviewer: {
-        id: 3,
-        name: 'Sylvia Palmer',
-        avatar: 'https://i.imgur.com/LpaY82x.png',
-      },
-    },
-  },
-  3: {
-    id: 3,
-    time: '2pm',
-  },
-  4: {
-    id: 4,
-    time: '3pm',
-    interview: {
-      student: 'Archie Andrews',
-      interviewer: {
-        id: 4,
-        name: 'Cohana Roy',
-        avatar: 'https://i.imgur.com/FK8V841.jpg',
-      },
-    },
-  },
-  5: {
-    id: 5,
-    time: '4pm',
-  },
-};
+import { getAppointmentsForDay, getInterview } from 'helpers/selectors.js';
+// import InterviewerList from './InterviewerList.js';
+
+// const appointments = {
+//   1: {
+//     id: 1,
+//     time: '12pm',
+//   },
+//   2: {
+//     id: 2,
+//     time: '1pm',
+//     interview: {
+//       student: 'Lydia Miller-Jones',
+//       interviewer: {
+//         id: 3,
+//         name: 'Sylvia Palmer',
+//         avatar: 'https://i.imgur.com/LpaY82x.png',
+//       },
+//     },
+//   },
+//   3: {
+//     id: 3,
+//     time: '2pm',
+//   },
+//   4: {
+//     id: 4,
+//     time: '3pm',
+//     interview: {
+//       student: 'Archie Andrews',
+//       interviewer: {
+//         id: 4,
+//         name: 'Cohana Roy',
+//         avatar: 'https://i.imgur.com/FK8V841.jpg',
+//       },
+//     },
+//   },
+//   5: {
+//     id: 5,
+//     time: '4pm',
+//   },
+// };
 
 export default function Application(props) {
   // Setting multiple states into one state.
   // Each key is a different state.
   const [state, setState] = useState({
-    day: 'Monday',
+    day: '',
     days: [],
+    appointments: {},
+    interviewers: {},
   });
+  let dailyAppointments = [];
   // ...state contains all keys within the setState object
   const setDay = (day) => setState({ ...state, day });
   // Since setDays is being used in useEffect, we must use setState((prev) => ({ ...prev, days })) instead of using setState({ ...state, day })
-  const setDays = (days) => setState((prev) => ({ ...prev, days }));
+  // const setDays = (days) => setState((prev) => ({ ...prev, days }));
 
   // http://localhost:8001/api/days isnt required, because localhost is used by default
-  const url = `/api/days`;
+  const daysApi = `/api/days`;
+  const appointmentsApi = `/api/appointments`;
+  const interviewerApi = `/api/interviewers`;
 
   const changeDay = function (newDay) {
     if (state.day === 'Monday') {
@@ -73,8 +80,43 @@ export default function Application(props) {
   };
 
   useEffect(() => {
-    axios.get(url).then((response) => setDays(response.data));
+    // axios.get(daysApi).then((response) => setDays(response.data));
+    Promise.all([
+      Promise.resolve(axios.get(daysApi).then((response) => response.data)),
+      Promise.resolve(
+        axios.get(appointmentsApi).then((response) => response.data)
+      ),
+      Promise.resolve(
+        axios.get(interviewerApi).then((response) => response.data)
+      ),
+    ]).then((all) => {
+      setState((prev) => ({
+        ...prev,
+        day: 'Monday',
+        days: all[0],
+        appointments: all[1],
+        interviewers: all[2],
+      }));
+    });
   }, []);
+
+  dailyAppointments = getAppointmentsForDay(state, state.day);
+  const schedule = Object.values(dailyAppointments).map((appointment) => {
+    const interview = getInterview(state, dailyAppointments.interview);
+
+    // console.log('Interview: ', interview);
+    // console.log('dailyAppointments interview', dailyAppointments[0].interview);
+    return (
+      <Appointment
+        key={appointment.id}
+        id={appointment.id}
+        time={appointment.time}
+        interview={appointment.interview}
+      />
+    );
+    // return <Appointment key='last' time='5pm' />;
+  });
+  // console.log('Schedule: ', schedule);
 
   return (
     <main className='layout'>
@@ -108,19 +150,7 @@ export default function Application(props) {
           alt='Lighthouse Labs'
         />
       </section>
-      <section className='schedule'>
-        {Object.values(appointments).map((appointment) => {
-          return (
-            <Appointment
-              key={appointment.id}
-              id={appointment.id}
-              time={appointment.time}
-              interview={appointment.interview}
-            />
-          );
-          return <Appointment key='last' time='5pm' />;
-        })}
-      </section>
+      <section className='schedule'>{schedule}</section>
     </main>
   );
 }
