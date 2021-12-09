@@ -4,6 +4,8 @@ import DayList from './DayList.js';
 import axios from 'axios';
 import Appointment from './Appointment/index.js';
 import { getAppointmentsForDay, getInterview } from 'helpers/selectors.js';
+import useVisualMode from '../hooks/useVisualMode.js';
+
 // import InterviewerList from './InterviewerList.js';
 
 // const appointments = {

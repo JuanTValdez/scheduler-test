@@ -183,15 +183,15 @@ storiesOf('Appointment', module)
       onCancel={action('onCancel')}
     />
   ))
-  .add('Create', () => (
-    <Form
-      interviewer={interviewer}
-      interviewers={interviewers}
-      onChange={action('onChange')}
-      onSave={action('onSave')}
-      onCancel={action('onCancel')}
-    />
-  ))
+  // .add('Create', () => (
+  //   <Form
+  //     interviewer={interviewer}
+  //     interviewers={interviewers}
+  //     onChange={action('onChange')}
+  //     onSave={action('onSave')}
+  //     onCancel={action('onCancel')}
+  //   />
+  // ))
   .add('Edit', () => (
     <Form
       value={3}
