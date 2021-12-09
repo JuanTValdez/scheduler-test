@@ -70,7 +70,7 @@ export function getAppointmentsForDay(state, day) {
     (currentDay) => currentDay.name === day
   );
 
-  // Checked if state.days and filteredDays are empty. If so, return empty array
+  // Checks if state.days and filteredDays are empty. If so, return empty array
 
   if (state.days.length === 0 || filteredDays.length === 0) {
     return [];
@@ -83,4 +83,20 @@ export function getAppointmentsForDay(state, day) {
   });
 
   return appointments;
+}
+
+export function getInterviewersForDay(state, day) {
+  const filteredDays = state.days.filter(
+    (currentDay) => currentDay.name === day
+  );
+
+  if (state.days.length === 0 || filteredDays.length === 0) {
+    return [];
+  }
+
+  const interviewers = filteredDays[0].interviewers.map((id) => {
+    return state.interviewers[id];
+  });
+
+  return interviewers;
 }
