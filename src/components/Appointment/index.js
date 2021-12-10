@@ -13,8 +13,15 @@ const SAVING = 'SAVING';
 
 export default function Appointment(props) {
   // console.log('Interviewer Props: ', props.interview.interviewer.name);
+  console.log('Passing Interviewers ', props.interviewers);
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
+  );
+
+  const interviewerList = Object.values(props.interviewers).map(
+    (interviewer) => {
+      return interviewer;
+    }
   );
   return (
     // <div>
@@ -32,7 +39,8 @@ export default function Appointment(props) {
       {mode === 'CREATE' && (
         <Form
           interviewer={[]}
-          interviewers={[]}
+          interviewers={interviewerList}
+          // interviewers={[props.interviewers[0]]}
           onChange={() => {}}
           onSave={() => transition(SAVING)}
           onCancel={() => back()}
