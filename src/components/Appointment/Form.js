@@ -20,11 +20,11 @@ export default function Form(props) {
 
   // ADD ONSAVE
 
-  const save = function () {
-    setInterviewer(interviewer.name);
+  // const save = function () {
+  //   setInterviewer(interviewer.name);
 
-    props.onSave(interviewer.name, interviewer.id);
-  };
+  //   props.onSave(interviewer.name, interviewer.id);
+  // };
 
   return (
     <main className='appointment__card appointment__card--create'>
@@ -44,10 +44,9 @@ export default function Form(props) {
           />
         </form>
         <InterviewerList
-          value={props.value}
+          value={interviewer}
           interviewers={props.interviewers}
-          student={student}
-          onChange={props.onChange}
+          onChange={setInterviewer}
           /* your code goes here */
         />
       </section>
@@ -55,8 +54,6 @@ export default function Form(props) {
         <section className='appointment__actions'>
           <Button
             danger
-            student={() => setStudent('')}
-            interviewers={() => setInterviewer(null)}
             onClick={cancel}
             //  your code goes here
           >
@@ -65,7 +62,9 @@ export default function Form(props) {
           <Button
             // needs to add props.
             confirm
-            onClick={save}
+            onClick={() => {
+              props.onSave(student, interviewer);
+            }}
             // your code goes here
           >
             Save

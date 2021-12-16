@@ -3,6 +3,7 @@ import Header from './Header.js';
 import Show from './Show.js';
 import Empty from './Empty.js';
 import Form from './Form.js';
+import Status from './Status.js';
 import useVisualMode from '../../hooks/useVisualMode.js';
 import './styles.scss';
 
@@ -10,19 +11,35 @@ const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
+const EDIT = 'EDIT';
 
 export default function Appointment(props) {
   // console.log('Interviewer Props: ', props.interview.interviewer.name);
-  console.log('Passing Interviewers ', props.interviewers);
+
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+  console.log('Appointment Props: ', props);
+
+  const save = function (name, interviewer) {
+    const interview = {
+      student: name,
+      interviewer: interviewer.id,
+    };
+    console.log('Interview: ', interview);
+    transition(SAVING);
+    props.bookInterview(props.id, interview).then(() => transition(SHOW));
+  };
+
+  // console.log('Passing Interviewers ', props.interviewers);
 
   const interviewerList = Object.values(props.interviewers).map(
     (interviewer) => {
       return interviewer;
     }
   );
+
+  // console.log('Interviewer List:', interviewerList);
   return (
     // <div>
     <article className='appointment'>
@@ -42,7 +59,7 @@ export default function Appointment(props) {
           interviewers={interviewerList}
           // interviewers={[props.interviewers[0]]}
           onChange={() => {}}
-          onSave={() => transition(SAVING)}
+          onSave={save}
           onCancel={() => back()}
         />
       )}
@@ -56,6 +73,20 @@ export default function Appointment(props) {
           onDelete={props.onDelete}
         ></Show>
       )}
+      {mode === 'EDIT' && (
+        <Form
+          value={3}
+          student='Juan Valdez'
+          interviewer={2}
+          // interviewers={interviewers}
+          // onChange={action('OnChange')}
+          onSave={() => {
+            save();
+          }}
+          // onCancel={action('onCancel')}
+        />
+      )}
+      {mode === SAVING && <Status message='Saving' />}
     </article>
     // </div>
   );

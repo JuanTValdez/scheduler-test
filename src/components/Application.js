@@ -24,6 +24,26 @@ export default function Application(props) {
   let dailyAppointments = [];
   let dailyInterviewers = [];
 
+  const bookInterview = function (id, interview) {
+    console.log('Label this: ', id, interview);
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview },
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment,
+    };
+    const newState = {
+      ...state,
+      appointments,
+    };
+    return axios
+      .post(`/api/appointments/${id}`, appointment)
+      .then((response) => setState(newState));
+  };
+
   // ...state contains all keys within the setState object
   const setDay = (day) => setState({ ...state, day });
   // Since setDays is being used in useEffect, we must use setState((prev) => ({ ...prev, days })) instead of using setState({ ...state, day })
@@ -85,6 +105,7 @@ export default function Application(props) {
         time={appointment.time}
         interview={appointment.interview}
         interviewers={dailyInterviewers}
+        bookInterview={bookInterview}
       />
     );
     // return <Appointment key='last' time='5pm' />;
