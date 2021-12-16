@@ -7,15 +7,15 @@ export default function DayListItem(props) {
     if (props.spots === 0) {
       return 'no spots remaining';
     } else if (props.spots === 1) {
-      return '1 spot remaining';
+      return `${props.spots} remaining`;
     } else if (props.spots === 2) {
-      return '2 spots remaining';
+      return `${props.spots} remaining`;
     } else if (props.spots === 3) {
-      return '3 spots remaining';
+      return `${props.spots} remaining`;
     } else if (props.spots === 4) {
-      return '4 spots remaining';
+      return `${props.spots} remaining`;
     } else if (props.spots === 5) {
-      return '5 spots remaining';
+      return `${props.spots} remaining`;
     }
   };
   const dayClass = classNames('dayList', {

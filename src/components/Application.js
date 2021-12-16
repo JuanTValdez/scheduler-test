@@ -40,7 +40,7 @@ export default function Application(props) {
       appointments,
     };
     return axios
-      .post(`/api/appointments/${id}`, appointment)
+      .put(`/api/appointments/${id}`, appointment)
       .then((response) => setState(newState));
   };
 
@@ -96,14 +96,14 @@ export default function Application(props) {
   // console.log('Daily Appointments: ', dailyAppointments);
 
   const schedule = Object.values(dailyAppointments).map((appointment) => {
-    const interview = getInterview(state, dailyAppointments.interview);
-
+    const interview = getInterview(state, appointment.interview);
+    console.log('Int: ', interview);
     return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
-        interview={appointment.interview}
+        interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
       />
