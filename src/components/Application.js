@@ -25,7 +25,7 @@ export default function Application(props) {
   let dailyInterviewers = [];
 
   const bookInterview = function (id, interview) {
-    console.log('Label this: ', id, interview);
+    console.log('Book Interview: ', id, interview);
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -42,6 +42,10 @@ export default function Application(props) {
     return axios
       .put(`/api/appointments/${id}`, appointment)
       .then((response) => setState(newState));
+  };
+
+  const cancelInterview = function (id, interview) {
+    console.log('Cancel Interview: ', id, interview);
   };
 
   // ...state contains all keys within the setState object
@@ -106,6 +110,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={dailyInterviewers}
         bookInterview={bookInterview}
+        cancelInterview={cancelInterview}
       />
     );
     // return <Appointment key='last' time='5pm' />;

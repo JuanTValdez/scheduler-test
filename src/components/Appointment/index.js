@@ -4,6 +4,7 @@ import Show from './Show.js';
 import Empty from './Empty.js';
 import Form from './Form.js';
 import Status from './Status.js';
+import Confirm from './Confirm.js';
 import useVisualMode from '../../hooks/useVisualMode.js';
 import './styles.scss';
 
@@ -11,6 +12,7 @@ const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
+const CONFIRM = 'CONFIRM';
 const EDIT = 'EDIT';
 
 export default function Appointment(props) {
@@ -20,7 +22,15 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
   // console.log('Appointment Props: ', props);
-
+  const deleteAppointment = function (name, interviewer) {
+    const interview = {
+      student: null,
+      interviewer: null,
+    };
+    // console.log('Interview: ', interview);
+    transition(EMPTY);
+    props.cancelInterview(props.id, interview).then(() => transition(SHOW));
+  };
   const save = function (name, interviewer) {
     const interview = {
       student: name,
@@ -38,7 +48,7 @@ export default function Appointment(props) {
       return interviewer;
     }
   );
-  console.log('Interview prop: ', props.interview);
+  // console.log('Interview prop: ', props.interview);
   // console.log('Interviewer List:', interviewerList);
   return (
     // <div>
@@ -86,7 +96,16 @@ export default function Appointment(props) {
         />
       )}
       {mode === SAVING && <Status message='Saving' />}
+
+      {mode === CONFIRM && (
+        <Confirm
+          message='Delete the appointment?'
+          onConfirm={() => {}}
+          onCancel={() => back()}
+        />
+      )}
     </article>
+
     // </div>
   );
 }
