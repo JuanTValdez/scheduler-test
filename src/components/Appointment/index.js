@@ -12,6 +12,7 @@ const EMPTY = 'EMPTY';
 const SHOW = 'SHOW';
 const CREATE = 'CREATE';
 const SAVING = 'SAVING';
+const DELETING = 'DELETING';
 const CONFIRM = 'CONFIRM';
 const EDIT = 'EDIT';
 
@@ -21,35 +22,33 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
-  // console.log('Appointment Props: ', props);
-  const deleteAppointment = function (name, interviewer) {
+
+  const deleteAppointment = function () {
     const interview = {
       student: null,
       interviewer: null,
     };
-    // console.log('Interview: ', interview);
-    transition(EMPTY);
-    props.cancelInterview(props.id, interview).then(() => transition(SHOW));
+
+    transition(DELETING);
+    props.cancelInterview(props.id, interview).then(() => transition(EMPTY));
   };
+
   const save = function (name, interviewer) {
     const interview = {
       student: name,
       interviewer: interviewer.id,
     };
-    // console.log('Interview: ', interview);
+
     transition(SAVING);
     props.bookInterview(props.id, interview).then(() => transition(SHOW));
   };
-
-  // console.log('Passing Interviewers ', props.interviewers);
 
   const interviewerList = Object.values(props.interviewers).map(
     (interviewer) => {
       return interviewer;
     }
   );
-  // console.log('Interview prop: ', props.interview);
-  // console.log('Interviewer List:', interviewerList);
+
   return (
     // <div>
     <article className='appointment'>
@@ -67,7 +66,6 @@ export default function Appointment(props) {
         <Form
           interviewer={[]}
           interviewers={interviewerList}
-          // interviewers={[props.interviewers[0]]}
           onChange={() => {}}
           onSave={save}
           onCancel={() => back()}
@@ -78,21 +76,25 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
-          onEdit={props.onEdit}
-          onDelete={props.onDelete}
+          onEdit={() => {
+            transition(EDIT);
+          }}
+          onDelete={() => {
+            transition(CONFIRM);
+          }}
         ></Show>
       )}
       {mode === 'EDIT' && (
         <Form
-          value={3}
-          student='Juan Valdez'
-          interviewer={2}
-          // interviewers={interviewers}
-          // onChange={action('OnChange')}
-          onSave={() => {
-            save();
+          // value={props.student}
+          student={props.interview.student}
+          interviewer={props.interview.interviewer}
+          interviewers={interviewerList}
+          onChange={() => {}}
+          onSave={save}
+          onCancel={() => {
+            back();
           }}
-          // onCancel={action('onCancel')}
         />
       )}
       {mode === SAVING && <Status message='Saving' />}
@@ -100,10 +102,14 @@ export default function Appointment(props) {
       {mode === CONFIRM && (
         <Confirm
           message='Delete the appointment?'
-          onConfirm={() => {}}
+          onConfirm={() => {
+            deleteAppointment();
+          }}
           onCancel={() => back()}
         />
       )}
+
+      {mode === DELETING && <Status message='Deleting' />}
     </article>
 
     // </div>

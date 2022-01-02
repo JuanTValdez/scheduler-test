@@ -134,12 +134,19 @@ storiesOf('InterviewerList', module)
   })
   .add('Initial', () => <InterviewerList interviewers={interviewers} />)
   .add('Selected', () => (
-    <InterviewerList interviewers={interviewers} value={3} />
+    <InterviewerList
+      interviewers={interviewers}
+      value={interviewers.id}
+      selected
+    />
   ))
   .add('Clickable', () => (
     <InterviewerList
-      onChange={action('setInterviewer')}
       interviewers={interviewers}
+      // id={interviewers.id}
+      // name={interviewers.name}
+      // avatar={interviewers.avatar}
+      onChange={action('setInterviewer')}
     />
   ));
 
@@ -186,16 +193,7 @@ storiesOf('Appointment', module)
       onSave={action('onSave')}
       onCancel={action('onCancel')}
     />
-  ))
-  // .add('Create', () => (
-  //   <Form
-  //     interviewer={interviewer}
-  //     interviewers={interviewers}
-  //     onChange={action('onChange')}
-  //     onSave={action('onSave')}
-  //     onCancel={action('onCancel')}
-  //   />
-  // ))
+  )
   .add('Edit', () => (
     <Form
       value={3}
