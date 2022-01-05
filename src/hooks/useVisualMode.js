@@ -6,14 +6,15 @@ export default function useVisualMode(initialMode) {
 
   function transition(newMode, replace = false) {
     if (replace === true) {
-      history.pop();
+      // history.pop();
 
-      setHistory(history);
-      setMode(history[history.length - 1]);
+      // setHistory(history);
+      setHistory((prev) => [...prev, mode]);
+      // setMode(history[history.length - 1]);
     }
 
     setMode(newMode);
-    setHistory([...history, newMode]);
+    // setHistory([...history, newMode]);
 
     // else {
     //   setMode(newMode);
@@ -25,18 +26,12 @@ export default function useVisualMode(initialMode) {
 
   function back() {
     if (history.length >= 1) {
-      // console.log('before POP: ' + history);
       history.pop();
 
-      setHistory(
-        history
-        // (history) => history.filter((_, pop) => pop !== history.length - 1)
-      );
+      setHistory(history);
     }
-    // console.log('History after pop: ' + history);
-    // console.log('Mode before setMode: ' + mode);
-    setMode(history[history.length - 1]);
-    // console.log('Mode after setMode: ' + mode);
+
+    setMode(history[0]);
   }
 
   return { mode, history, transition, back };
