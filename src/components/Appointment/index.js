@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from './Header.js';
 import Show from './Show.js';
 import Empty from './Empty.js';
@@ -25,6 +25,7 @@ export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
+  const [isNewInterview, setIsNewInterview] = useState(false);
 
   const deleteAppointment = function () {
     const interview = {
@@ -49,7 +50,7 @@ export default function Appointment(props) {
 
     transition(SAVING);
     props
-      .bookInterview(props.id, interview)
+      .bookInterview(props.id, interview, isNewInterview)
       .then(() => transition(SHOW))
       .catch((err) => {
         transition(ERROR_SAVE, true);
@@ -71,7 +72,10 @@ export default function Appointment(props) {
         <Empty
           // id={1}
           // time={props.time}
-          onAdd={() => transition(CREATE)}
+          onAdd={() => {
+            transition(CREATE);
+            setIsNewInterview(true);
+          }}
         />
       )}
 
@@ -91,6 +95,7 @@ export default function Appointment(props) {
           interviewer={props.interview.interviewer}
           onEdit={() => {
             transition(EDIT);
+            setIsNewInterview(false);
           }}
           onDelete={() => {
             transition(CONFIRM);

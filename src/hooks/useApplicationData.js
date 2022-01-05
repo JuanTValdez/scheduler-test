@@ -7,7 +7,7 @@ export default function useApplicationData(props) {
     appointments: {},
     interviewers: {},
   });
-
+  // console.log('Access Spots: ', ...state.days);
   const daysApi = `/api/days`;
   const appointmentsApi = `/api/appointments`;
   const interviewerApi = `/api/interviewers`;
@@ -33,7 +33,7 @@ export default function useApplicationData(props) {
     });
   }, []);
 
-  const bookInterview = function (id, interview) {
+  const bookInterview = function (id, interview, newInterview = false) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview },
@@ -44,9 +44,21 @@ export default function useApplicationData(props) {
       [id]: appointment,
     };
 
+    const newDays = state.days.map((dayObj) => {
+      if (dayObj.name == state.day && newInterview === true) {
+        return {
+          ...dayObj,
+          spots: dayObj.spots - 1,
+        };
+      } else {
+        return dayObj;
+      }
+    });
+
     const newState = {
       ...state,
       appointments,
+      days: newDays,
     };
 
     return axios
@@ -57,25 +69,35 @@ export default function useApplicationData(props) {
   const cancelInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
-      interview: { ...interview },
+      // interview: { ...interview },
     };
 
     const appointments = {
       ...state.appointments,
       [id]: appointment,
     };
-    console.log('Cancel appointments: ', appointments);
+
+    const newDays = state.days.map((dayObj) => {
+      if (dayObj.name == state.day) {
+        return {
+          ...dayObj,
+          spots: dayObj.spots + 1,
+        };
+      } else {
+        return dayObj;
+      }
+    });
+    console.log('Days: ', state);
+
     const newState = {
       ...state,
       appointments,
+      days: newDays,
     };
 
     return axios
       .delete(`/api/appointments/${id}`, appointment)
-      .then(
-        (response) => setState(newState),
-        console.log('Spots: ', state.appointments[id])
-      );
+      .then((response) => setState(newState));
   };
 
   // ...state contains all keys within the setState object
