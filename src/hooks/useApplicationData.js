@@ -7,7 +7,7 @@ export default function useApplicationData(props) {
     appointments: {},
     interviewers: {},
   });
-  console.log('Days Object: ', state.days);
+
   const daysApi = `/api/days`;
   const appointmentsApi = `/api/appointments`;
   const interviewerApi = `/api/interviewers`;
@@ -72,7 +72,10 @@ export default function useApplicationData(props) {
 
     return axios
       .delete(`/api/appointments/${id}`, appointment)
-      .then((response) => setState(newState));
+      .then(
+        (response) => setState(newState),
+        console.log('Spots: ', state.appointments[id])
+      );
   };
 
   // ...state contains all keys within the setState object
