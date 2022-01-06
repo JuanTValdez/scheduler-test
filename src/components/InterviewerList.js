@@ -3,9 +3,6 @@ import InterviewerListItem from './InterviewerListItem.js';
 import './InterviewerListItem.scss';
 
 export default function InterviewerList(props) {
-  // const [selected, setSelected] = useState(props.value);
-  // const [name, setName] = useState(props.name);
-
   const selected = props.value && props.value.id;
 
   const interviewers =
@@ -22,7 +19,6 @@ export default function InterviewerList(props) {
       );
     });
 
-  // console.log('Interviewers: ', interviewers);
   return (
     <div>
       <section className='interviewers'>

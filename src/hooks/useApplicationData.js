@@ -7,13 +7,12 @@ export default function useApplicationData(props) {
     appointments: {},
     interviewers: {},
   });
-  // console.log('Access Spots: ', ...state.days);
+
   const daysApi = `/api/days`;
   const appointmentsApi = `/api/appointments`;
   const interviewerApi = `/api/interviewers`;
 
   useEffect(() => {
-    // axios.get(daysApi).then((response) => setDays(response.data));
     Promise.all([
       Promise.resolve(axios.get(daysApi).then((response) => response.data)),
       Promise.resolve(
@@ -69,7 +68,6 @@ export default function useApplicationData(props) {
   const cancelInterview = function (id, interview) {
     const appointment = {
       ...state.appointments[id],
-      // interview: { ...interview },
     };
 
     const appointments = {

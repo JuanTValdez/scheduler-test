@@ -20,8 +20,6 @@ const ERROR_SAVE = 'ERROR_SAVE';
 const ERROR_DELETE = 'ERROR_DELETE';
 
 export default function Appointment(props) {
-  // console.log('Interviewer Props: ', props.interview.interviewer.name);
-
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
   );
@@ -64,14 +62,11 @@ export default function Appointment(props) {
   );
 
   return (
-    // <div>
     <article className='appointment'>
       <Header time={props.time}></Header>
 
       {mode === 'EMPTY' && (
         <Empty
-          // id={1}
-          // time={props.time}
           onAdd={() => {
             transition(CREATE);
             setIsNewInterview(true);
@@ -104,7 +99,6 @@ export default function Appointment(props) {
       )}
       {mode === 'EDIT' && (
         <Form
-          // value={props.student}
           student={props.interview.student}
           interviewer={props.interview.interviewer}
           interviewers={interviewerList}
@@ -140,7 +134,5 @@ export default function Appointment(props) {
         <Error message='Could not delete appointment.' onClose={() => back()} />
       )}
     </article>
-
-    // </div>
   );
 }

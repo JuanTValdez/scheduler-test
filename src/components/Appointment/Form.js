@@ -28,35 +28,24 @@ export default function Form(props) {
             placeholder='Enter Student Name'
             value={student}
             onChange={(event) => setStudent(event.target.value)}
-            /*
-          This must be a controlled component
-          your code goes here
-        */
           />
         </form>
         <InterviewerList
           value={interviewer}
           interviewers={props.interviewers}
           onChange={setInterviewer}
-          /* your code goes here */
         />
       </section>
       <section className='appointment__card-right'>
         <section className='appointment__actions'>
-          <Button
-            danger
-            onClick={cancel}
-            //  your code goes here
-          >
+          <Button danger onClick={cancel}>
             Cancel
           </Button>
           <Button
-            // needs to add props.
             confirm
             onClick={() => {
               props.onSave(student, interviewer);
             }}
-            // your code goes here
           >
             Save
           </Button>
