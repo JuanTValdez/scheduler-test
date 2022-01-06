@@ -6,7 +6,6 @@ import Button from '../Button.js';
 export default function Form(props) {
   const [student, setStudent] = useState(props.student || '');
   const [interviewer, setInterviewer] = useState(props.interviewer || '');
-  // console.log('THIS: ' +  interviewer.name)
 
   const reset = function () {
     setStudent('');
@@ -17,14 +16,6 @@ export default function Form(props) {
 
     props.onCancel();
   };
-
-  // ADD ONSAVE
-
-  // const save = function () {
-  //   setInterviewer(interviewer.name);
-
-  //   props.onSave(interviewer.name, interviewer.id);
-  // };
 
   return (
     <main className='appointment__card appointment__card--create'>
