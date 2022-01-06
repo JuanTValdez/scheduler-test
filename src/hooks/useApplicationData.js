@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 export default function useApplicationData(props) {
   const [state, setState] = useState({
@@ -44,7 +44,7 @@ export default function useApplicationData(props) {
     };
 
     const newDays = state.days.map((dayObj) => {
-      if (dayObj.name == state.day && newInterview === true) {
+      if (dayObj.name === state.day && newInterview === true) {
         return {
           ...dayObj,
           spots: dayObj.spots - 1,
@@ -76,7 +76,7 @@ export default function useApplicationData(props) {
     };
 
     const newDays = state.days.map((dayObj) => {
-      if (dayObj.name == state.day) {
+      if (dayObj.name === state.day) {
         return {
           ...dayObj,
           spots: dayObj.spots + 1,
