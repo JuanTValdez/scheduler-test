@@ -10,8 +10,8 @@ export default function Form(props) {
 
   const reset = function () {
     setStudent('');
-    setInterviewer(null);
     setError('');
+    setInterviewer(null);
   };
   const cancel = function () {
     reset();
