@@ -16,7 +16,7 @@ export default function useVisualMode(initial) {
     // remove last history item
     setHistory((prev) => [...prev.slice(0, prev.length - 1)]);
   }
-  console.log('Mode: ', history);
+  // console.log('Mode: ', history);
   return {
     mode: history[history.length - 1],
     transition,

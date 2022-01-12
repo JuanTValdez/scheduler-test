@@ -20,15 +20,15 @@ const interviewers = [
 ];
 
 describe('Appointment', () => {
-  it('renders without crashing', () => {
-    render(
-      <Appointment
-        // key={interviewers.id}
-        // id={interviewers.id}
-        interviewers={interviewers}
-      />
-    );
-  });
+  // it('renders without crashing', () => {
+  //   render(
+  //     <Appointment
+  //       // key={interviewers.id}
+  //       // id={interviewers.id}
+  //       interviewers={interviewers}
+  //     />
+  //   );
+  // });
 
   it('does something it is supposed to do', () => {
     // ...
