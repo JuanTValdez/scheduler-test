@@ -85,7 +85,6 @@ export default function useApplicationData(props) {
         return dayObj;
       }
     });
-    console.log('Days: ', state);
 
     const newState = {
       ...state,
